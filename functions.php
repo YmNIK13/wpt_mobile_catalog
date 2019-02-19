@@ -1,5 +1,6 @@
 <?php
 
+
 spl_autoload_register(function ($name_class_all) {
     $name_class_mas = explode('\\',  $name_class_all);
     $name_class = end($name_class_mas);
@@ -13,3 +14,4 @@ spl_autoload_register(function ($name_class_all) {
 
 
 $mobile = new MobileCategory\Mobile();
+$style_script = new MobileCategory\SheetsScripts(true);

@@ -1,14 +1,17 @@
-
 <?php
-
-/* Start the Loop */
-while ( have_posts() ) :
-    the_post();
-
+if (!defined('ABSPATH')) {
+    exit;
+} ?>
 
 
-    get_template_part( 'single', 'mobile' );
+<?php get_header(); ?>
+
+
+<h1>Hello world single</h1>
+
+
+<?php get_footer(); ?>
 
 
 
-endwhile;
+
