@@ -8,9 +8,6 @@ abstract class EntityWP {
     abstract function registerType();
     abstract function registerFields();
 
-    abstract function addQueryVars($vars);
-    abstract function addRewriteRules($rules);
-
     public function __construct() {
         // Регистрируем новый тип данных
         add_action('init', array($this, 'registerType'));
@@ -18,9 +15,6 @@ abstract class EntityWP {
         // подключаем функцию активации мета блока (registerFields)
         add_action('add_meta_boxes', array($this, 'registerFields'), 1);
 
-        // Добавляем GET-параметры и прописываем путь
-        add_filter('query_vars', array(&$this, 'addQueryVars'));
-        add_filter('rewrite_rules_array', array(&$this, 'addRewriteRules'));
     }
 
     /** Создаем новый тип записи
@@ -64,7 +58,7 @@ abstract class EntityWP {
             'labels' => $labels,
             'public' => $public,
             'publicly_queryable' => $public,// Запросы относящиеся к этому типу записей будут работать во фронтэнде
-            'exclude_from_search' => false, // исключить из посика по сайту
+            'exclude_from_search' => false, // исключить из поиcка по сайту
             'show_ui' => true,              // не показывать пользовательский интерфейс (UI) для этого типа записей
             'show_in_menu' => true,         // этот тип записей будет спрятан из выбора меню навигации
             'menu_position' => 10,          // позиция в меню админки (10-14 — под «Медиафайлы»)
@@ -101,11 +95,8 @@ abstract class EntityWP {
             $args['hierarchical'] = $ar['not_main'];
         }
 
-        if (empty($posttype)) {
-            $posttype = "";
-        }
 
-        register_post_type($internalname, $args, $posttype);
+        register_post_type($internalname, $args);
 
         flush_rewrite_rules();
     }

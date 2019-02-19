@@ -10,6 +10,14 @@ class Mobile extends EntityWP {
         $this->name_entuty = "mobile";
 
         parent::__construct();
+
+
+        // Добавляем GET-параметры и прописываем путь
+        add_filter('query_vars', array(&$this, 'addQueryVars'));
+        // add_filter('rewrite_rules_array', array(&$this, 'addRewriteRules'));
+
+        // Подключаем наш шаблон
+        // add_filter('template_include', array($this, 'registerTemplate'));
     }
 
     /** Регистрируем новый тип  */
@@ -25,7 +33,7 @@ class Mobile extends EntityWP {
         $this->createTaxonomy("Производитель", "manufacturer", array($this->name_entuty));
     }
 
-    /** Регистрируем дополнительные поля для мобил */
+    /** Регистрируем дополнительные поля в админке */
     public function registerFields() {
         add_meta_box('extra_fields', 'Создать производителя', array($this, 'registerFieldsTemplate'), $this->name_entuty, 'normal', 'high');
     }
@@ -37,6 +45,7 @@ class Mobile extends EntityWP {
      */
     public function addQueryVars($vars) {
         // Добавим имя параметра, который должен отображаться в URL
+        $vars[] = 'pagename';
         $vars[] = 'mobile_name';
         return $vars;
     }
@@ -47,7 +56,7 @@ class Mobile extends EntityWP {
      */
     public function addRewriteRules($rules) {
         // Правила для перезаписи URL, что бы наш параметр не менялся
-        $aNewRules = array($this->name_entuty . '/([^/]+)/?$' => 'index.php?mobile_name=$matches[1]');
+        $aNewRules = array($this->name_entuty . '/([^/]+)/?$' => 'index.php?pagename=$matches[1]');
         $rules = $aNewRules + $rules;
         return $rules;
     }
@@ -64,10 +73,13 @@ class Mobile extends EntityWP {
 
         <div class="row" style="width: 100%">
             <div>
-                <input type="text"  id="mobile_description" name="mobile_description" style="width: 100%" value="<?= $mobile_description ?>"/>
+                <input type="text" id="mobile_description" name="mobile_description" style="width: 100%"
+                       value="<?= $mobile_description ?>"/>
             </div>
         </div>
         <?php
+        // get_template_part( 'template-parts/admin/fields' );
     }
+
 
 }
