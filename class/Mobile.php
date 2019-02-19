@@ -17,7 +17,7 @@ class Mobile extends EntityWP {
     public function registerType() {
         $param = array(
             'menu_icon' => 'dashicons-smartphone',
-            'supports' => array('title', 'thumbnail'),
+            'supports' => array('title', 'thumbnail', 'editor'),
             "not_main" => false
         );
 
