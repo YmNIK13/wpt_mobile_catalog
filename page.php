@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 <?php get_header(); ?>
 
 
-<h1>Hello world index</h1>
+<h1>Hello world page</h1>
 
 
 <?php get_footer(); ?>

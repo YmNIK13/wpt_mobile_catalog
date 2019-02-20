@@ -4,17 +4,36 @@ namespace MobileCategory;
 
 class Theme {
 
+    private $page_category;
+    private $slug_category;
+
+
     public function __construct() {
         $this->_autoloadClass();
-    }
+        $this->slug_category = "mobiles";
 
 
-    public function init() {
+        // Текущая страница если есть
+        $this->page_category = get_page_by_path($this->slug_category, OBJECT, 'page');
+
+        // добавляем свой путь
+        add_action('init', array($this, 'add_route_path'));
+        // Подключаем наш шаблон
+        add_filter('template_include', array($this, 'register_template'));
+
+
         add_theme_support('post-thumbnails', array('post', 'mobile'));
 
         $mobile = new Mobile();
         $style_script = new SheetsScripts(true);
+
+
+        //Поправим пагинацию
+        add_filter('navigation_markup_template', array($this, 'my_navigation_template'), 10, 2);
+
+
     }
+
 
     private function _autoloadClass() {
         spl_autoload_register(function ($name_class_all) {
@@ -30,6 +49,42 @@ class Theme {
     }
 
 
+    public function add_route_path() {
+
+        $page_test = !empty($this->page_category);
+
+        // Правило перезаписи
+        add_rewrite_rule('^(' . $this->slug_category . ')(/page/([0-9]+))?/?', 'index.php?pagename=$matches[1]&paged=$matches[3]', 'top');
+        // add_rewrite_rule('^('.$this->slug_category.')/?', 'index.php?pagename=$matches[1]', 'top');
+
+        // скажем WP, что есть новые параметры запроса
+        add_filter('query_vars', function ($vars) use ($page_test) {
+            $vars[] = 'pagename';
+            $vars[] = 'paged';
+            return $vars;
+        });
+    }
+
+
+    function my_navigation_template($template, $class) {
+        return '<nav class="navigation %1$s" role="navigation">
+		<div class="nav-links">%3$s</div>
+	</nav>';
+    }
+
+
+    /** Цепляем свой шаблон
+     * @param $template - текущий шаблон
+     * @return string - подмененный шаблон если соответвует типу записи
+     */
+    function register_template($template) {
+        if (get_query_var('pagename') == $this->slug_category) {
+            global $wp_query;
+            $wp_query->is_404 = false;
+            $template = get_template_directory() . '/mobiles.php';
+        }
+        return $template;
+    }
 
 
     static public function getBreadcrumb() {
@@ -59,6 +114,10 @@ class Theme {
             $result_breadcrumb[] = the_search_query();
         }
 
+        if (get_query_var('pagename') == 'mobiles') {
+            $result_breadcrumb[] = get_the_title();
+        }
+
         return $result_breadcrumb;
     }
 
@@ -73,16 +132,27 @@ class Theme {
         return $result_title;
     }
 
-    static public function postNavigation() {
-        the_posts_pagination(
+
+    static public function getPagination() {
+
+        $link_pagination = paginate_links(
             array(
-                'show_all'     => false, // показаны все страницы участвующие в пагинации
-                'end_size'     => 1,     // количество страниц на концах
-                'mid_size'     => 2,     // количество страниц вокруг текущей
-                'prev_next'    => true,  // выводить ли боковые ссылки "предыдущая/следующая страница".
-                'prev_text'    => __('« Previous'),
-                'next_text'    => __('Next »'),
+                'end_size' => 2,
+                'type' => 'array',
             )
         );
+
+        $result = "<ul class=\"pagination\">";
+        foreach ($link_pagination as $link) {
+            $result .= "<li>";
+            $result .= $link;
+            $result .= "</li>";
+        }
+
+        $result .= "</ul>";
+
+
+        return $result;
     }
+
 }
