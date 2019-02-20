@@ -30,6 +30,8 @@ class Theme {
     }
 
 
+
+
     static public function getBreadcrumb() {
         $result_breadcrumb = array();
         $result_breadcrumb[] = '<a href="' . home_url() . '" rel="nofollow">Home</a>';
@@ -69,5 +71,18 @@ class Theme {
         }
 
         return $result_title;
+    }
+
+    static public function postNavigation() {
+        the_posts_pagination(
+            array(
+                'show_all'     => false, // показаны все страницы участвующие в пагинации
+                'end_size'     => 1,     // количество страниц на концах
+                'mid_size'     => 2,     // количество страниц вокруг текущей
+                'prev_next'    => true,  // выводить ли боковые ссылки "предыдущая/следующая страница".
+                'prev_text'    => __('« Previous'),
+                'next_text'    => __('Next »'),
+            )
+        );
     }
 }
