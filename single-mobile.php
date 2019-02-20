@@ -10,75 +10,69 @@ if (!defined('ABSPATH')) {
 
 
 $mobile = get_post();
+setup_postdata($mobile);
 
 
-?>
-
-<?php get_header(); ?>
-<?php get_sidebar(); ?>
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="pf-img">
-                    <img src="img/blog/img6.jpg" alt="" height="500">
-                </div>
-
-            </div>
-        </div>
-    </div>
+get_header(); ?>
 
     <!--container start-->
     <div class="container">
         <div class="row">
-            <!--portfolio-single start-->
-
-            <div class="col-lg-9 ">
-                <div class="title">
-                    <h3>Mirum est notare quam littera gothica</h3>
-                    <hr>
-                </div>
-                <div class="pf-detail">
-                    <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                </div>
-                <p>
-                    <button class="btn bg-maroon margin"><i class="fa fa-external-link pr-5"></i>Preview</button>
-                </p>
+            <div class="col-md-6" style="text-align: center;">
+                <img src="<?= get_the_post_thumbnail_url($mobile->ID, 'large') ?>" style="max-height: 500px;">
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-6">
                 <div class="title">
                     <h3>Product details</h3>
                     <hr>
                 </div>
                 <ul class="list-unstyled pf-list">
-                    <li><i class="fa fa-arrow-circle-right pr-10"></i><b>Client: </b> <span><a
-                                    href="#">wrapbootstrap</a></span></li>
-                    <li><i class="fa fa-arrow-circle-right pr-10"></i><b>Skills: </b><span><a href="#">WordPress</a>, <a
-                                    href="#">HTML5</a></span></li>
-                    <li><i class="fa fa-arrow-circle-right pr-10"></i><b>Colors: </b><span>blue, gray, purple</span>
+                    <li>
+                        <i class="fa fa-arrow-circle-right pr-10"></i>
+                        <b>Client: </b>
+                        <span><a href="#">wrapbootstrap</a></span>
                     </li>
-                    <li><i class="fa fa-arrow-circle-right pr-10"></i><b>Release Date: </b><span>06 January, 2014</span>
+                    <li>
+                        <i class="fa fa-arrow-circle-right pr-10"></i>
+                        <b>Skills: </b>
+                        <span><a href="#">WordPress</a>, <a href="#">HTML5</a></span>
                     </li>
-                    <li><i class="fa fa-arrow-circle-right pr-10"></i><b>Launch Project: </b><span><a
-                                    href="www.wrapbootstrap.com">wrapbootstrap</a></span></li>
+                    <li>
+                        <i class="fa fa-arrow-circle-right pr-10"></i>
+                        <b>Colors: </b>
+                        <span>blue, gray, purple</span>
+                    </li>
+                    <li>
+                        <i class="fa fa-arrow-circle-right pr-10"></i>
+                        <b>Release Date: </b>
+                        <span>06 January, 2014</span>
+                    </li>
+                    <li>
+                        <i class="fa fa-arrow-circle-right pr-10"></i>
+                        <b>Launch Project: </b>
+                        <span><a href="www.wrapbootstrap.com">wrapbootstrap</a></span>
+                    </li>
                 </ul>
             </div>
         </div>
+
+
+        <div class="row">
+            <!--portfolio-single start-->
+
+            <div class="col-lg-12">
+                <div class="title">
+                    <h2><?= $mobile->post_title ?></h2>
+                    <hr>
+                </div>
+                <div class="pf-detail">
+                    <?php the_content(); ?>
+                </div>
+            </div>
+        </div>
+
+
         <ul class="pager">
             <li class="previous"><a href="#">&larr; Older</a></li>
             <li class="next"><a href="#">Newer &rarr;</a></li>
@@ -87,7 +81,9 @@ $mobile = get_post();
     </div>
 
 
-<?
+<?php
+
+
 //*
 echo "<pre>";
 print_r($mobile);
@@ -107,7 +103,7 @@ echo "</pre>";
                 <div id="owl-demo" class="owl-carousel owl-theme wow fadeIn">
 
                     <div class="item view view-tenth">
-                        <img src="img/works/img8.jpg" alt="work Image">
+                        <img src="/wp-content/themes/wpt_mobile_catalog/demo/works/img8.jpg" alt="work Image">
                         <div class="mask">
                             <a href="portfolio-single-image.html" class="info" data-toggle="tooltip"
                                data-placement="top" title="Details">
@@ -116,7 +112,7 @@ echo "</pre>";
                         </div>
                     </div>
                     <div class="item view view-tenth">
-                        <img src="img/works/img9.jpg" alt="work Image">
+                        <img src="/wp-content/themes/wpt_mobile_catalog/demo/works/img9.jpg" alt="work Image">
                         <div class="mask">
                             <a href="portfolio-single-image.html" class="info" data-toggle="tooltip"
                                data-placement="top" title="Details">
@@ -125,7 +121,7 @@ echo "</pre>";
                         </div>
                     </div>
                     <div class="item view view-tenth">
-                        <img src="img/works/img10.jpg" alt="work Image">
+                        <img src="/wp-content/themes/wpt_mobile_catalog/demo/works/img10.jpg" alt="work Image">
                         <div class="mask">
                             <a href="portfolio-single-image.html" class="info" data-toggle="tooltip"
                                data-placement="top" title="Details">
@@ -134,7 +130,7 @@ echo "</pre>";
                         </div>
                     </div>
                     <div class="item view view-tenth">
-                        <img src="img/works/img11.jpg" alt="work Image">
+                        <img src="/wp-content/themes/wpt_mobile_catalog/demo/works/img11.jpg" alt="work Image">
                         <div class="mask">
                             <a href="portfolio-single-image.html" class="info" data-toggle="tooltip"
                                data-placement="top" title="Details">
@@ -143,7 +139,7 @@ echo "</pre>";
                         </div>
                     </div>
                     <div class="item view view-tenth">
-                        <img src="img/works/img12.jpg" alt="work Image">
+                        <img src="/wp-content/themes/wpt_mobile_catalog/demo/works/img12.jpg" alt="work Image">
                         <div class="mask">
                             <a href="blog_detail.html" class="info" data-toggle="tooltip" data-placement="top"
                                title="Details">
@@ -152,7 +148,7 @@ echo "</pre>";
                         </div>
                     </div>
                     <div class="item view view-tenth">
-                        <img src="img/works/img13.jpg" alt="work Image">
+                        <img src="/wp-content/themes/wpt_mobile_catalog/demo/works/img13.jpg" alt="work Image">
                         <div class="mask">
                             <a href="blog_detail.html" class="info" data-toggle="tooltip" data-placement="top"
                                title="Details">

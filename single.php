@@ -1,4 +1,9 @@
 <?php
+/*
+Template Name: Общий щаблон
+Template Post Type: post
+*/
+
 if (!defined('ABSPATH')) {
     exit;
 } ?>

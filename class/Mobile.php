@@ -32,7 +32,6 @@ class Mobile extends EntityWP {
     }
 
 
-
     /** Шаблон добавляемых дополнительных полей
      * @param $mobile - запись mobile
      */

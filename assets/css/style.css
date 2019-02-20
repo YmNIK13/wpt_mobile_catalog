@@ -78,6 +78,15 @@ p {
 	color: #48cfad
 }
 
+.navbar-brand sup {
+	background: #00000033;
+	border-radius: 3px;
+	font-size: 12px;
+	margin-left: 0;
+	padding: 0 5px;
+	top: -16px;
+}
+
 .head-section .navbar-collapse ul.navbar-nav {
 	float: right;
 	margin-right: 0;
