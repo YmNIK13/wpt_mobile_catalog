@@ -57,19 +57,10 @@ class AJAXRequest {
     }
 
     static function addAjaxRequest() {
-        self::notAjax();
-        $value = '';
-
-        self::beginRequest();
-        echo apply_filters( 'ajax_request_filter', $value );
-        self::endRequest();
-    }
-
-
-    static public function notAjax() {
-        if (!self::isAjax()) {
+        if (self::isAjax()) {
+            $value = '';
             self::beginRequest();
-            echo json_encode(array('success' => false,));
+            echo apply_filters( 'ajax_request_filter', $value );
             self::endRequest();
         }
     }

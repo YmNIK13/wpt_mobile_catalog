@@ -29,21 +29,23 @@ foreach ($terms as $term_name) {
 ?>
 
 <div class="filters-mobile">
-    <?php foreach ($filter_parameters as $name_param => $parameter) { ?>
-        <div class="filters-mobile__item">
-            <div class="filters-mobile__item-title"><?= $name_taxonomies[$name_param]; ?></div>
-            <div class="filters-mobile__item-variant">
-                <?php foreach ($parameter as $param_value) { ?>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="<?=$name_param . "[". $param_value['id'] ."]" ?>">
-                            <?=$param_value['name']; ?>
-                        </label>
-                    </div>
-                <?php } ?>
+    <form id="filters-mobile">
+        <?php foreach ($filter_parameters as $name_param => $parameter) { ?>
+            <div class="filters-mobile__item">
+                <div class="filters-mobile__item-title"><?= $name_taxonomies[$name_param]; ?></div>
+                <div class="filters-mobile__item-variant">
+                    <?php foreach ($parameter as $param_value) { ?>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="<?= $name_param . "[" . $param_value['id'] . "]" ?>">
+                                <?= $param_value['name']; ?>
+                            </label>
+                        </div>
+                    <?php } ?>
+                </div>
             </div>
-        </div>
-    <?php } ?>
+        <?php } ?>
+    </form>
 </div>
 
 <button id="ajax_btn" class="btn btn-success">Тест</button>
