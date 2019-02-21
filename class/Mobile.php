@@ -24,6 +24,9 @@ class Mobile extends EntityWP {
         // Регистрируем тип и таксономию
         $this->createPostType("Мобилы", $this->name_entuty, $param);
         $this->createTaxonomy("Производитель", "manufacturer", array($this->name_entuty));
+        $this->createTaxonomy("Оперативная память", "ram", array($this->name_entuty));
+        $this->createTaxonomy("Внутренняя память", "memory", array($this->name_entuty));
+        $this->createTaxonomy("Операционная система", "os", array($this->name_entuty));
     }
 
     /** Регистрируем дополнительные поля в админке */
