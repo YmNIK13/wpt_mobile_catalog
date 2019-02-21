@@ -142,6 +142,11 @@ class Theme {
             )
         );
 
+        if(empty($link_pagination)){
+            return false;
+        }
+
+
         $result = "<ul class=\"pagination\">";
         foreach ($link_pagination as $link) {
             $result .= "<li>";

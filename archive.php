@@ -22,9 +22,9 @@ if (!defined('ABSPATH')) {
                         <?php while (have_posts()) {
                             the_post();
 
-                            get_template_part('template-parts/content/content', 'mobiles');
+                            get_template_part('template-parts/content/content', 'mobile');
                         }
-                        MobileCategory\Theme::postNavigation();
+                        MobileCategory\Theme::getPagination();
 
                         ?>
                     </div>

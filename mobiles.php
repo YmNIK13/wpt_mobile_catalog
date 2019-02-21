@@ -31,7 +31,7 @@ query_posts(array(
                         <?php while (have_posts()) {
                             the_post();
 
-                            get_template_part('template-parts/content/content', 'mobiles');
+                            get_template_part('template-parts/content/content', 'mobile');
                         } ?>
                         </div>
                         <div class="row">
@@ -47,3 +47,5 @@ query_posts(array(
         </div>
     </main><!-- #main -->
 </section><!-- #primary -->
+
+<?php get_footer(); ?>
