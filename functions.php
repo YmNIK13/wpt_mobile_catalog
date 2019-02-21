@@ -24,7 +24,18 @@ register_sidebar(array(
 
 
 // Регистрация класса виджета
-add_action( 'widgets_init', 'my_register_widgets' );
+add_action('widgets_init', 'my_register_widgets');
 function my_register_widgets() {
-    register_widget( MobileCategory\FilterWidget::class );
+    register_widget(MobileCategory\FilterWidget::class);
 }
+
+
+// Мой ajax
+add_action('ajax_request_filter', 'ajax_filter');
+function ajax_filter() {
+    return json_encode(array(
+        'success' => true,
+        'data' => $_POST,
+    ));
+}
+

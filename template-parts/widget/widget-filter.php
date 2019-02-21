@@ -45,3 +45,5 @@ foreach ($terms as $term_name) {
         </div>
     <?php } ?>
 </div>
+
+<button id="ajax_btn" class="btn btn-success">Тест</button>

@@ -28,6 +28,10 @@ class Theme {
         $style_script = new SheetsScripts(true);
 
 
+        // Регаем наши AJAX
+        AJAXRequest::init();
+
+
         //Поправим пагинацию
         add_filter('navigation_markup_template', array($this, 'my_navigation_template'), 10, 2);
 
@@ -55,12 +59,12 @@ class Theme {
 
         // Правило перезаписи
         add_rewrite_rule('^(' . $this->slug_category . ')(/page/([0-9]+))?/?', 'index.php?pagename=$matches[1]&paged=$matches[3]', 'top');
-        // add_rewrite_rule('^('.$this->slug_category.')/?', 'index.php?pagename=$matches[1]', 'top');
 
         // скажем WP, что есть новые параметры запроса
         add_filter('query_vars', function ($vars) use ($page_test) {
             $vars[] = 'pagename';
             $vars[] = 'paged';
+            $vars[] = 'ajax-filter';
             return $vars;
         });
     }
