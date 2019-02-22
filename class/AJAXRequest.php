@@ -16,19 +16,21 @@ class AJAXRequest {
     /**
      * Prevent direct object creation
      */
-    final private function  __construct() { }
+    final private function __construct() {
+    }
 
     /**
      * Prevent object cloning
      */
-    final private function  __clone() { }
+    final private function __clone() {
+    }
 
     /**
      * Returns new or existing Singleton instance
      * @return Singleton
      */
-    final public static function init(){
-        if(null !== static::$_instance){
+    final public static function init() {
+        if (null !== static::$_instance) {
             return static::$_instance;
 
 
@@ -36,31 +38,34 @@ class AJAXRequest {
         static::$_instance = new static();
 
         // добавляем свой путь
-        add_action('init', array(self::class, 'registerAJAXPath'), 10);
+        add_action('init', array(self::class, 'registerAJAXPath'),10);
 
         // добавляем метод обработки через фильтр
-        add_action('init', array(self::class, 'addAjaxRequest'), 11);
+        add_action('init', array(self::class, 'addAjaxRequest'), 20);
 
         return static::$_instance;
     }
 
 
     static function registerAJAXPath() {
-        add_rewrite_rule('^(ajax-filter)/?', 'index.php?ajax-filter=true', 'top');
+        add_rewrite_rule('^ajax-filter/?', 'index.php?jax_filter=true', 'top');
 
         // скажем WP, что есть новые параметры запроса
         add_filter('query_vars', function ($vars) {
-            $vars[] = 'ajax-filter';
+            $vars[] = 'ajax_filter';
             return $vars;
         });
     }
 
     static function addAjaxRequest() {
-        if (self::isAjax()) {
-            $value = '';
-            self::beginRequest();
-            echo apply_filters( 'ajax_request_filter', $value );
-            self::endRequest();
+        if (!empty($_REQUEST['method_ajax'])) {
+            if (self::isAjax()) {
+                $method_ajax = mb_strtolower(trim($_REQUEST['method_ajax']));
+                $value = '';
+                self::beginRequest();
+                echo apply_filters('ajax_request_' . $method_ajax, $value);
+                self::endRequest();
+            }
         }
     }
 

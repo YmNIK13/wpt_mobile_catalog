@@ -4,29 +4,46 @@ namespace MobileCategory;
 
 class Theme {
 
-    private $page_category;
-    private $slug_category;
+    static private $page_category;
+    static private $slug_category;
+    static private $mobile;
+
+    protected static $_instance = NULL;
+
+    final private function __construct() {
+    }
+
+    final private function __clone() {
+    }
+
+    /** Returns new or existing Singleton instance
+     * @return Theme
+     */
+    final public static function start() {
+        if (null !== static::$_instance) {
+            return static::$_instance;
+        }
+        static::$_instance = new static();
 
 
-    public function __construct() {
-        $this->_initObject();
+        self::_initObject();
 
 
-        $this->slug_category = "mobiles";
+        self::$slug_category = "mobiles";
         // Текущая страница если есть
-        $this->page_category = get_page_by_path($this->slug_category, OBJECT, 'page');
+        self::$page_category = get_page_by_path(self::$slug_category, OBJECT, 'page');
 
 
         // добавляем свой путь
-        add_action('init', array($this, 'add_route_path'));
+        add_action('init', array(self::class, 'add_route_path'));
         // Подключаем наш шаблон
-        add_filter('template_include', array($this, 'register_template'));
+        add_filter('template_include', array(self::class, 'register_template'));
 
 
         // Включаем миниатюры
         add_theme_support('post-thumbnails', array('post', 'mobile'));
         // регистрация меню
-        register_nav_menus(array( 'top' => 'Верхнее меню', ));
+        register_nav_menus(array('top' => 'Верхнее меню',));
         // регистрация сайдбара
         register_sidebar(array(
             'name' => __('Sidebar', 'wpt_mobile_catalog'),
@@ -43,25 +60,27 @@ class Theme {
         });
 
 
-
         // Мой ajax
-        add_action('ajax_request_filter', 'ajax_filter');
+        add_action('ajax_request_filter_mobile', array(self::class, 'ajax_filter'));
 
-
+        return static::$_instance;
     }
 
-    private function _initObject(){
-        $this->_autoloadClass();
 
-        $mobile = new Mobile();
-        $style_script = new SheetsScripts(true);
 
+    static private function _initObject() {
+        self::_autoloadClass();
+
+        self::$mobile = new Mobile();
+
+        // Добавляем скрипты и стили
+        SheetsScripts::init(true);
         // Регаем наши AJAX
         AJAXRequest::init();
     }
 
 
-    private function _autoloadClass() {
+    static private function _autoloadClass() {
         spl_autoload_register(function ($name_class_all) {
             $name_class_mas = explode('\\', $name_class_all);
             $name_class = end($name_class_mas);
@@ -75,14 +94,12 @@ class Theme {
     }
 
 
-    public function add_route_path() {
-        $page_test = !empty($this->page_category);
-
+    static public function add_route_path() {
         // Правило перезаписи
-        add_rewrite_rule('^(' . $this->slug_category . ')(/page/([0-9]+))?/?', 'index.php?pagename=$matches[1]&paged=$matches[3]', 'top');
+        add_rewrite_rule('^(' . self::$slug_category . ')(/page/([0-9]+))?/?', 'index.php?pagename=$matches[1]&paged=$matches[3]', 'top');
 
         // скажем WP, что есть новые параметры запроса
-        add_filter('query_vars', function ($vars) use ($page_test) {
+        add_filter('query_vars', function ($vars) {
             $vars[] = 'pagename';
             $vars[] = 'paged';
             $vars[] = 'ajax-filter';
@@ -94,8 +111,8 @@ class Theme {
      * @param $template - текущий шаблон
      * @return string - подмененный шаблон если соответвует типу записи
      */
-    function register_template($template) {
-        if (get_query_var('pagename') == $this->slug_category) {
+    static public function register_template($template) {
+        if (get_query_var('pagename') == self::$slug_category) {
             global $wp_query;
             $wp_query->is_404 = false;
             $template = get_template_directory() . '/mobiles.php';
@@ -103,7 +120,7 @@ class Theme {
         return $template;
     }
 
-    function ajax_filter() {
+    static public function ajax_filter() {
         return json_encode(array(
             'success' => true,
             'data' => $_POST,
