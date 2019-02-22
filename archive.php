@@ -24,7 +24,7 @@ if (!defined('ABSPATH')) {
 
                             get_template_part('template-parts/content/content', 'mobile');
                         }
-                        MobileCategory\Theme::getPagination();
+                        MobileCategory\BlockHTML::getPagination();
 
                         ?>
                     </div>

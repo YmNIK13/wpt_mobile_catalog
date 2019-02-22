@@ -13,20 +13,7 @@
         </div>
 
         <div class="navbar-collapse collapse">
-            <?php
-            // print menu
-            wp_nav_menu( $args = array(
-                'theme_location'    => 'top',
-                'container'         => 'div',
-                'container_id'      => 'top-menu',
-                'container_class'   => 'navbar-collapse collapse',
-                'menu_class'        => 'nav navbar-nav',
-                'echo'              => true,
-                'items_wrap'        => '<ul id="%1$s" class="%2$s">%3$s <li><input class="form-control search" placeholder=" Search" type="text"></li></ul>',
-                'depth'             => 10,
-                'walker'            => new MobileCategory\HeadNavMenu
-            ));
-            ?>
+            <?= MobileCategory\BlockHTML::getTopMenu(); ?>
         </div>
     </div>
 </header>

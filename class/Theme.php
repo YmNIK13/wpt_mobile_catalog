@@ -9,12 +9,13 @@ class Theme {
 
 
     public function __construct() {
-        $this->_autoloadClass();
+        $this->_initObject();
+
+
         $this->slug_category = "mobiles";
-
-
         // Текущая страница если есть
         $this->page_category = get_page_by_path($this->slug_category, OBJECT, 'page');
+
 
         // добавляем свой путь
         add_action('init', array($this, 'add_route_path'));
@@ -22,20 +23,41 @@ class Theme {
         add_filter('template_include', array($this, 'register_template'));
 
 
+        // Включаем миниатюры
         add_theme_support('post-thumbnails', array('post', 'mobile'));
+        // регистрация меню
+        register_nav_menus(array( 'top' => 'Верхнее меню', ));
+        // регистрация сайдбара
+        register_sidebar(array(
+            'name' => __('Sidebar', 'wpt_mobile_catalog'),
+            'id' => 'sidebar-area',
+            'description' => __('Sidebar', 'wpt_mobile_catalog'),
+            'before_widget' => '',
+            'after_widget' => '',
+            'before_title' => '<h3>',
+            'after_title' => '</h3>',
+        ));
+        // Регистрация класса виджета
+        add_action('widgets_init', function () {
+            register_widget(FilterWidget::class);
+        });
+
+
+
+        // Мой ajax
+        add_action('ajax_request_filter', 'ajax_filter');
+
+
+    }
+
+    private function _initObject(){
+        $this->_autoloadClass();
 
         $mobile = new Mobile();
         $style_script = new SheetsScripts(true);
 
-
         // Регаем наши AJAX
         AJAXRequest::init();
-
-
-        //Поправим пагинацию
-        add_filter('navigation_markup_template', array($this, 'my_navigation_template'), 10, 2);
-
-
     }
 
 
@@ -54,7 +76,6 @@ class Theme {
 
 
     public function add_route_path() {
-
         $page_test = !empty($this->page_category);
 
         // Правило перезаписи
@@ -69,14 +90,6 @@ class Theme {
         });
     }
 
-
-    function my_navigation_template($template, $class) {
-        return '<nav class="navigation %1$s" role="navigation">
-		<div class="nav-links">%3$s</div>
-	</nav>';
-    }
-
-
     /** Цепляем свой шаблон
      * @param $template - текущий шаблон
      * @return string - подмененный шаблон если соответвует типу записи
@@ -90,78 +103,12 @@ class Theme {
         return $template;
     }
 
-
-    static public function getBreadcrumb() {
-        $result_breadcrumb = array();
-        $result_breadcrumb[] = '<a href="' . home_url() . '" rel="nofollow">Home</a>';
-
-        if (is_front_page()) {
-            $result_breadcrumb = array();
-        } else if (is_single()) {
-            $taxonomy_bread = get_the_terms(get_the_ID(), 'manufacturer');
-
-            if (count($taxonomy_bread)) {
-                $category_breadcrumb = $taxonomy_bread[0];
-                $result_breadcrumb[] = '<a href="' . get_category_link($category_breadcrumb->term_id) . '" rel="nofollow">' . $category_breadcrumb->name . '</a>';
-            }
-            $result_breadcrumb[] = get_the_title();
-
-        } elseif (is_tax()) {
-            $taxonomy_bread = get_the_terms(get_the_ID(), 'manufacturer');
-            if (count($taxonomy_bread)) {
-                $category_breadcrumb = $taxonomy_bread[0];
-                $result_breadcrumb[] = $category_breadcrumb->name;
-            }
-        } elseif (is_page()) {
-            $result_breadcrumb[] = get_the_title();
-        } elseif (is_search()) {
-            $result_breadcrumb[] = the_search_query();
-        }
-
-        if (get_query_var('pagename') == 'mobiles') {
-            $result_breadcrumb[] = get_the_title();
-        }
-
-        return $result_breadcrumb;
+    function ajax_filter() {
+        return json_encode(array(
+            'success' => true,
+            'data' => $_POST,
+        ));
     }
 
-
-    static public function getTitle() {
-        if (is_tax()) {
-            $result_title = single_term_title('', 0);
-        } else {
-            $result_title = the_title();
-        }
-
-        return $result_title;
-    }
-
-
-    static public function getPagination() {
-
-        $link_pagination = paginate_links(
-            array(
-                'end_size' => 2,
-                'type' => 'array',
-            )
-        );
-
-        if(empty($link_pagination)){
-            return false;
-        }
-
-
-        $result = "<ul class=\"pagination\">";
-        foreach ($link_pagination as $link) {
-            $result .= "<li>";
-            $result .= $link;
-            $result .= "</li>";
-        }
-
-        $result .= "</ul>";
-
-
-        return $result;
-    }
 
 }

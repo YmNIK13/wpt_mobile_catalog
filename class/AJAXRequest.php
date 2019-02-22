@@ -35,12 +35,11 @@ class AJAXRequest {
         }
         static::$_instance = new static();
 
-
         // добавляем свой путь
         add_action('init', array(self::class, 'registerAJAXPath'), 10);
 
+        // добавляем метод обработки через фильтр
         add_action('init', array(self::class, 'addAjaxRequest'), 11);
-
 
         return static::$_instance;
     }

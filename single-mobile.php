@@ -81,18 +81,6 @@ get_header(); ?>
     </div>
 
 
-<?php
-
-
-//*
-echo "<pre>";
-print_r($mobile);
-echo "</pre>";
-//*/
-
-
-?>
-
 
     <div class="container">
         <!--recent work start-->

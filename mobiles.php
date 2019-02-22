@@ -36,7 +36,7 @@ query_posts(array(
                         } ?>
                         </div>
                         <div class="row">
-                            <?= MobileCategory\Theme::getPagination(); ?>
+                            <?= MobileCategory\BlockHTML::getPagination(); ?>
                         </div>
                     </div>
 
