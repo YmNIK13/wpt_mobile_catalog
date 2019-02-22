@@ -8,9 +8,10 @@ class Mobile extends EntityWP {
 
     public function __construct() {
         $this->name_entuty = "mobile";
-
         parent::__construct();
 
+        // подключаем функцию активации мета блока
+        add_action('add_meta_boxes', array($this, 'registerFields'), 1);
     }
 
     /** Регистрируем новый тип  */
@@ -31,7 +32,7 @@ class Mobile extends EntityWP {
 
     /** Регистрируем дополнительные поля в админке */
     public function registerFields() {
-        add_meta_box('extra_fields', 'Создать производителя', array($this, 'registerFieldsTemplate'), $this->name_entuty, 'normal', 'high');
+        add_meta_box('extra_fields', 'Дополнительные параметры', array($this, 'registerFieldsTemplate'), $this->name_entuty, 'normal', 'high');
     }
 
 
@@ -42,16 +43,68 @@ class Mobile extends EntityWP {
         $mobile_description = get_post_meta($mobile->ID, 'mobile_description', 1);
 
         ?>
-        <input id="mobile_id" name="mobile_id" type="hidden" value="<?= $mobile->ID; ?>"/>
+        <form role="form">
+            <input id="mobile_id" name="mobile_id" type="hidden" value="<?= $mobile->ID; ?>"/>
 
-        <div class="row" style="width: 100%">
-            <div>
-                <input type="text" id="mobile_description" name="mobile_description" style="width: 100%"
-                       value="<?= $mobile_description ?>"/>
-            </div>
-        </div>
+            <input type="text" id="mobile_description" name="mobile_description"
+                   class="form-control" placeholder="Сколько служит батарея"
+                   value="<?= $mobile_description ?>"/>
+        </form>
         <?php
+        // require get_template_directory_uri() . '/template-parts/admin/fields.php'
         // get_template_part( 'template-parts/admin/fields' );
+    }
+
+
+    public function filterMobiles($arg = array()) {
+        $new_argument = array();
+
+        /*
+
+        [
+                'relation' => 'AND',
+                [
+                    'taxonomy' => 'manufacturer',
+                    'field' => 'id',
+                    'terms' => [ 2,7 ]
+                ],
+                [
+                    'taxonomy' => 'memory',
+                    'field' => 'id',
+                    'terms' => [ 14 ]
+                ]
+            ]
+
+         * */
+
+
+        if(!empty($arg)){
+            $tax_query = array(
+                'relation' => 'OR',
+            );
+
+            foreach ($arg as $name_taxonomy => $values_taxonomy){
+                $tax_query[] = array(
+                    'taxonomy' => $name_taxonomy,
+                    'field' => 'id',
+                    'terms' => array_keys($values_taxonomy),
+                );
+            }
+
+            $new_argument['tax_query'] = $tax_query;
+        }
+
+
+        $default_argument = array(
+            'posts_per_page' => 6,
+            'post_type' => 'mobile',
+            'paged' => get_query_var('paged') ? absint(get_query_var('paged')) : 1,
+        );
+
+        $default_argument = array_merge($default_argument, $new_argument);
+
+        return query_posts($default_argument);
+
     }
 
 

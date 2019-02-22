@@ -6,7 +6,14 @@ class Theme {
 
     static private $page_category;
     static private $slug_category;
+
+    /** @var Mobile */
     static private $mobile;
+
+
+    public static function getMobile() {
+        return self::$mobile;
+    }
 
     protected static $_instance = NULL;
 
@@ -121,9 +128,14 @@ class Theme {
     }
 
     static public function ajax_filter() {
+        $params = array();
+        parse_str($_REQUEST['filter'], $params);
+
+         $obj = self::$mobile->filterMobiles($params);
+
         return json_encode(array(
             'success' => true,
-            'data' => $_POST,
+            'data' => $obj,
         ));
     }
 

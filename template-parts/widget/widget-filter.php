@@ -1,16 +1,10 @@
 <?php
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-/*
 $title = apply_filters('widget_title', $instance['title']);
 
-echo $args['before_widget'];
-
-if ($title)
-    echo $args['before_title'] . $title . $args['after_title'];
-echo 'Привет!';
-
-echo $args['after_widget'];
-// */
 
 $taxonomies = get_taxonomies(array('public' => true, 'object_type' => array('mobile'),), 'objects');
 $name_taxonomies = array_column($taxonomies, 'label', 'name');
@@ -26,8 +20,15 @@ foreach ($terms as $term_name) {
         'name' => $term_name->name
     );
 }
-?>
 
+echo $args['before_widget'];
+if ($title){
+    echo $args['before_title'] . $title . $args['after_title'];
+}
+echo $args['after_widget'];
+
+
+?>
 <div class="filters-mobile">
     <form id="filters-mobile">
         <?php foreach ($filter_parameters as $name_param => $parameter) { ?>

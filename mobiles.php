@@ -4,12 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 
-query_posts(array(
-    'nopaging' => false,
-    'posts_per_page' => 6,
-    'post_type' => 'mobile',
-    'paged' => get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1,
-));
+MobileCategory\Theme::getMobile()->filterMobiles();
 
 ?>
 
@@ -28,7 +23,7 @@ query_posts(array(
                         <?php get_sidebar(); ?>
                     </div>
                     <div class="col-md-9">
-                        <div class="row">
+                        <div class="row" id="mobiles_target_filter">
                         <?php while (have_posts()) {
                             the_post();
 

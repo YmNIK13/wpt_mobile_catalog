@@ -3918,3 +3918,23 @@ div.header h3 {
 	left: 50%;
 	top: -4px;
 }
+
+/* ===============         Мобилы       ============================*/
+.mobiles__item {
+	height: 400px;
+}
+
+.mobiles__item-img {
+	text-align: center;
+}
+
+.mobiles__item-img img {
+	max-height: 300px;
+}
+
+.mobiles__item-title {
+	overflow: hidden;
+	max-height: 40px;
+	padding: 5px;
+	text-align: center;
+}

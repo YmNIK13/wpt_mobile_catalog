@@ -29,7 +29,8 @@ class BlockHTML {
 
         } elseif (is_tax()) {
             $taxonomy_bread = get_the_terms(get_the_ID(), 'manufacturer');
-            if (count($taxonomy_bread)) {
+
+            if (!empty($taxonomy_bread) && count($taxonomy_bread)) {
                 $category_breadcrumb = $taxonomy_bread[0];
                 $result_breadcrumb[] = $category_breadcrumb->name;
             }

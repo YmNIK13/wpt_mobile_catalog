@@ -43,7 +43,7 @@ class SheetsScripts {
 
     static public function admin_style() {
         wp_enqueue_style('admin-style', self::$dir_path_url . 'css/admin-style.css');
-        wp_enqueue_style('admin-style-bootstrap', self::$dir_path_url . 'css/bootstrap.css');
+        wp_enqueue_style('bootstrap-style', self::$dir_path_url . 'lib/bootstrap/css/bootstrap' . self::_isMin() . '.css');
     }
 
     static public function admin_scripts() {

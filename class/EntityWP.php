@@ -6,14 +6,10 @@ namespace MobileCategory;
 abstract class EntityWP {
 
     abstract function registerType();
-    abstract function registerFields();
 
     public function __construct() {
         // Регистрируем новый тип данных
         add_action('init', array($this, 'registerType'));
-
-        // подключаем функцию активации мета блока (registerFields)
-        add_action('add_meta_boxes', array($this, 'registerFields'), 1);
 
         /* Сбрасываем правила для произвольного типа записей. */
         add_action( 'after_switch_theme', array($this, 'bt_flush_rewrite_rules') );
