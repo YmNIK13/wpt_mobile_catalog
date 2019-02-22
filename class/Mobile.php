@@ -43,6 +43,9 @@ class Mobile extends EntityWP {
         $mobile_description = get_post_meta($mobile->ID, 'mobile_description', 1);
 
         ?>
+        wp_enqueue_style('bootstrap-style', );
+
+        <link href="<?= get_template_directory_uri() . '/assets/lib/bootstrap/css/bootstrap.min.css' ?>">
         <form role="form">
             <input id="mobile_id" name="mobile_id" type="hidden" value="<?= $mobile->ID; ?>"/>
 
@@ -57,53 +60,9 @@ class Mobile extends EntityWP {
 
 
     public function filterMobiles($arg = array()) {
-        $new_argument = array();
-
-        /*
-
-        [
-                'relation' => 'AND',
-                [
-                    'taxonomy' => 'manufacturer',
-                    'field' => 'id',
-                    'terms' => [ 2,7 ]
-                ],
-                [
-                    'taxonomy' => 'memory',
-                    'field' => 'id',
-                    'terms' => [ 14 ]
-                ]
-            ]
-
-         * */
 
 
-        if(!empty($arg)){
-            $tax_query = array(
-                'relation' => 'OR',
-            );
-
-            foreach ($arg as $name_taxonomy => $values_taxonomy){
-                $tax_query[] = array(
-                    'taxonomy' => $name_taxonomy,
-                    'field' => 'id',
-                    'terms' => array_keys($values_taxonomy),
-                );
-            }
-
-            $new_argument['tax_query'] = $tax_query;
-        }
-
-
-        $default_argument = array(
-            'posts_per_page' => 6,
-            'post_type' => 'mobile',
-            'paged' => get_query_var('paged') ? absint(get_query_var('paged')) : 1,
-        );
-
-        $default_argument = array_merge($default_argument, $new_argument);
-
-        return query_posts($default_argument);
+        return new \WP_Query($arg);
 
     }
 

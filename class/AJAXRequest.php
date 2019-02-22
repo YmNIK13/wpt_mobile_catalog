@@ -61,9 +61,11 @@ class AJAXRequest {
         if (!empty($_REQUEST['method_ajax'])) {
             if (self::isAjax()) {
                 $method_ajax = mb_strtolower(trim($_REQUEST['method_ajax']));
-                $value = '';
+                $value = array(
+                    "success" => true,
+                );
                 self::beginRequest();
-                echo apply_filters('ajax_request_' . $method_ajax, $value);
+                echo  json_encode( apply_filters('ajax_request_' . $method_ajax, $value));
                 self::endRequest();
             }
         }

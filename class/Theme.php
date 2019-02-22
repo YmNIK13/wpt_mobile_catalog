@@ -68,7 +68,7 @@ class Theme {
 
 
         // Мой ajax
-        add_action('ajax_request_filter_mobile', array(self::class, 'ajax_filter'));
+        add_action('ajax_request_filter_mobile', array(self::class, 'ajax_filter'), 10 , 1);
 
         return static::$_instance;
     }
@@ -109,7 +109,6 @@ class Theme {
         add_filter('query_vars', function ($vars) {
             $vars[] = 'pagename';
             $vars[] = 'paged';
-            $vars[] = 'ajax-filter';
             return $vars;
         });
     }
@@ -127,16 +126,18 @@ class Theme {
         return $template;
     }
 
-    static public function ajax_filter() {
+    static public function ajax_filter($value) {
         $params = array();
         parse_str($_REQUEST['filter'], $params);
 
          $obj = self::$mobile->filterMobiles($params);
 
-        return json_encode(array(
+
+        $value = array_merge($value, array(
             'success' => true,
             'data' => $obj,
         ));
+        return $value;
     }
 
 

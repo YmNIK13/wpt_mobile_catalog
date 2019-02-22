@@ -59,12 +59,14 @@ class BlockHTML {
     }
 
 
-    static public function getPagination() {
+    static public function getPagination($the_query, $cur_page = null) {
 
         $link_pagination = paginate_links(
             array(
                 'end_size' => 2,
                 'type' => 'array',
+                'current' => !empty($cur_page) ? $cur_page : (max(1, get_query_var('paged'))),
+                'total' => $the_query->max_num_pages
             )
         );
 
@@ -87,17 +89,17 @@ class BlockHTML {
     }
 
 
-    static public function getTopMenu(){
-        return wp_nav_menu( $args = array(
-            'theme_location'    => 'top',
-            'container'         => 'div',
-            'container_id'      => 'top-menu',
-            'container_class'   => 'navbar-collapse collapse',
-            'menu_class'        => 'nav navbar-nav',
-            'echo'              => false,
-            'items_wrap'        => '<ul id="%1$s" class="%2$s">%3$s <li><input class="form-control search" placeholder=" Search" type="text"></li></ul>',
-            'depth'             => 10,
-            'walker'            => new HeadNavMenu()
+    static public function getTopMenu() {
+        return wp_nav_menu($args = array(
+            'theme_location' => 'top',
+            'container' => 'div',
+            'container_id' => 'top-menu',
+            'container_class' => 'navbar-collapse collapse',
+            'menu_class' => 'nav navbar-nav',
+            'echo' => false,
+            'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s <li><input class="form-control search" placeholder=" Search" type="text"></li></ul>',
+            'depth' => 10,
+            'walker' => new HeadNavMenu()
         ));
     }
 

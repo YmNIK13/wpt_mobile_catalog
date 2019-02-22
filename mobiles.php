@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 
-MobileCategory\Theme::getMobile()->filterMobiles();
+$mobiless = MobileCategory\Theme::getMobile()->filterMobiles();
 
 ?>
 
@@ -18,20 +18,20 @@ MobileCategory\Theme::getMobile()->filterMobiles();
 
         <div class="container">
             <div class="row">
-                <?php if (have_posts()) { ?>
+                <?php if ($mobiless->have_posts()) { ?>
                     <div class="col-md-3">
                         <?php get_sidebar(); ?>
                     </div>
                     <div class="col-md-9">
                         <div class="row" id="mobiles_target_filter">
-                        <?php while (have_posts()) {
-                            the_post();
+                        <?php while ($mobiless->have_posts()) {
+                            $mobiless->the_post();
 
                             get_template_part('template-parts/content/content', 'mobile');
                         } ?>
                         </div>
                         <div class="row">
-                            <?= MobileCategory\BlockHTML::getPagination(); ?>
+                            <?= MobileCategory\BlockHTML::getPagination($mobiless); ?>
                         </div>
                     </div>
 
