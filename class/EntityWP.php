@@ -15,6 +15,9 @@ abstract class EntityWP {
         // подключаем функцию активации мета блока (registerFields)
         add_action('add_meta_boxes', array($this, 'registerFields'), 1);
 
+        /* Сбрасываем правила для произвольного типа записей. */
+        add_action( 'after_switch_theme', array($this, 'bt_flush_rewrite_rules') );
+
     }
 
     /** Создаем новый тип записи
@@ -98,7 +101,7 @@ abstract class EntityWP {
 
         register_post_type($internalname, $args);
 
-        flush_rewrite_rules();
+        // flush_rewrite_rules();
     }
 
     /** Создаем новый тип таксономии
@@ -147,6 +150,12 @@ abstract class EntityWP {
         }
 
         register_taxonomy($inernalname, $posttype, $args);
+        // flush_rewrite_rules();
+    }
+
+
+
+    function bt_flush_rewrite_rules() {
         flush_rewrite_rules();
     }
 
