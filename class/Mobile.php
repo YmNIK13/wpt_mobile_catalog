@@ -32,7 +32,10 @@ class Mobile extends EntityWP {
 
     /** Регистрируем дополнительные поля в админке */
     public function registerFields() {
-        add_meta_box('extra_fields', 'Дополнительные параметры', array($this, 'registerFieldsTemplate'), $this->name_entuty, 'normal', 'high');
+        add_meta_box('extra_fields',
+            'Дополнительные параметры',
+            array($this, 'registerFieldsTemplate'),
+            $this->name_entuty, 'normal', 'high');
     }
 
 

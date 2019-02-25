@@ -46,4 +46,17 @@ $mobiless = MobileCategory\Theme::getMobile()->filterMobiles();
     </main><!-- #main -->
 </section><!-- #primary -->
 
+<script type="text/html" id="one_mobile_template">
+    <div class="col-md-4">
+        <div class="mobiles__item">
+            <div class="mobiles__item-img">
+                <img data-src="img">
+            </div>
+            <div class="mobiles__item-title">
+                <a data-link="link" data-content="title"></a>
+            </div>
+        </div>
+    </div>
+</script>
+
 <?php get_footer(); ?>

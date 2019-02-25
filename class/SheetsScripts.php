@@ -98,6 +98,8 @@ class SheetsScripts {
         wp_enqueue_script('jquery-flexslider-script', self::$dir_path_url . 'lib/jquery/jquery.flexslider.js', array('jquery'), null, true);
         wp_enqueue_script('jquery-bxslider-script', self::$dir_path_url . 'lib/bxslider/jquery.bxslider.js', array('jquery'), null, true);
 
+        wp_enqueue_script('jquery-loadTemplate-script', self::$dir_path_url . 'lib/jquery-template/jquery.loadTemplate.js', array('jquery'), null, true);
+
 
         if (is_single() || is_front_page() || is_archive()) {
             wp_enqueue_script('jquery-owlcarousel-script', self::$dir_path_url . 'lib/owlcarousel/owl.carousel.js', array('jquery'), null, true);

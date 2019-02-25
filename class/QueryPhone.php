@@ -29,7 +29,7 @@ class QueryPhone extends \WP_Query {
 
         if(!empty($filter)){
             $tax_query = array(
-                'relation' => 'OR',
+                'relation' => 'AND',
             );
 
             foreach ($filter as $name_taxonomy => $values_taxonomy){
