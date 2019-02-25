@@ -10,6 +10,8 @@ class Theme {
     /** @var Mobile */
     static private $mobile;
 
+    static private $rest_method;
+
 
     public static function getMobile() {
         return self::$mobile;
@@ -46,6 +48,9 @@ class Theme {
         // Подключаем наш шаблон
         add_filter('template_include', array(self::class, 'register_template'));
 
+        // регистрируем REST
+        add_action('rest_api_init', array(self::class, 'registerREST'));
+
 
         // Включаем миниатюры
         add_theme_support('post-thumbnails', array('post', 'mobile'));
@@ -73,18 +78,17 @@ class Theme {
         return static::$_instance;
     }
 
-
     static private function _initObject() {
         self::_autoloadClass();
-
         self::$mobile = new Mobile();
 
         // Добавляем скрипты и стили
         SheetsScripts::init(true);
         // Регаем наши AJAX
         AJAXRequest::init();
-    }
 
+        self::$rest_method = RESTMethod::init(self::$mobile);
+    }
 
     static private function _autoloadClass() {
         spl_autoload_register(function ($name_class_all) {
@@ -98,7 +102,6 @@ class Theme {
             }
         });
     }
-
 
     static public function add_route_path() {
         // Правило перезаписи
@@ -129,27 +132,23 @@ class Theme {
         $params = array();
         parse_str($_REQUEST['filter'], $params);
 
-        /** @var  QueryPhone */
-        $obj = self::$mobile->filterMobiles($params);
-
-        $data_result = array();
-
-        while ($obj->have_posts()) {
-            $obj->the_post();
-            $cur_filter_post =  get_post();
-            $data_result[] = array(
-                "img" => get_the_post_thumbnail_url($cur_filter_post->ID, 'full'),
-                "title" => $cur_filter_post->post_title,
-                "link" => get_permalink($cur_filter_post->ID),
-            );
-        }
-
         $value = array_merge($value, array(
-            'success' => true,
-            'data' => $data_result,
+            'data' => self::$mobile->filterMobilesJson($params),
         ));
         return $value;
     }
 
+
+    static public function registerREST() {
+
+        register_rest_route('mobile-category/v1', '/ajax-filter/', array(
+            'methods' => 'POST',                                    // метод запроса: GET, POST ...
+            'callback' => array(RESTMethod::class, 'postFilter'),   // функция обработки запроса. Должна вернуть ответ на запрос
+                        // функция проверки доступа к маршруту. Должна вернуть true/false
+                        // описание передаваемых параметров
+            'permission_callback' => array(RESTMethod::class, 'permission'),
+
+        ));
+    }
 
 }

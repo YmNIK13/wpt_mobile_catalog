@@ -68,5 +68,23 @@ class Mobile extends EntityWP {
         return new QueryPhone($arg);
     }
 
+    public function filterMobilesJson($arg = array()){
+        /** @var  QueryPhone */
+        $obj = new QueryPhone($arg);
+
+        $data_result = array();
+
+        while ($obj->have_posts()) {
+            $obj->the_post();
+            $cur_filter_post =  get_post();
+            $data_result[] = array(
+                "img" => get_the_post_thumbnail_url($cur_filter_post->ID, 'full'),
+                "title" => $cur_filter_post->post_title,
+                "link" => get_permalink($cur_filter_post->ID),
+            );
+        }
+        return $data_result;
+    }
+
 
 }

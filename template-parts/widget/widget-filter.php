@@ -49,4 +49,6 @@ echo $args['after_widget'];
     </form>
 </div>
 
-<button id="ajax_btn" class="btn btn-success">Тест</button>
+<button id="ajax_btn" class="btn btn-success">Фильтр</button>
+
+<button id="ajax_btn_rest" class="btn btn-info">Фильтр REST</button>
