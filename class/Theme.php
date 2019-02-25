@@ -68,11 +68,10 @@ class Theme {
 
 
         // Мой ajax
-        add_action('ajax_request_filter_mobile', array(self::class, 'ajax_filter'), 10 , 1);
+        add_action('ajax_request_filter_mobile', array(self::class, 'ajax_filter'), 10, 1);
 
         return static::$_instance;
     }
-
 
 
     static private function _initObject() {
@@ -130,12 +129,24 @@ class Theme {
         $params = array();
         parse_str($_REQUEST['filter'], $params);
 
-         $obj = self::$mobile->filterMobiles($params);
+        /** @var  QueryPhone */
+        $obj = self::$mobile->filterMobiles($params);
 
+        $data_result = array();
+
+        while ($obj->have_posts()) {
+            $obj->the_post();
+            $cur_filter_post =  get_post();
+            $data_result[] = array(
+                "img" => get_the_post_thumbnail_url($cur_filter_post->ID, 'full'),
+                "title" => $cur_filter_post->post_title,
+                "link" => get_permalink($cur_filter_post->ID),
+            );
+        }
 
         $value = array_merge($value, array(
             'success' => true,
-            'data' => $obj,
+            'data' => $data_result,
         ));
         return $value;
     }

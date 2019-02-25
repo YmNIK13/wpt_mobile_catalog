@@ -58,12 +58,11 @@ class Mobile extends EntityWP {
         // get_template_part( 'template-parts/admin/fields' );
     }
 
-
+    /** фильтр телефонов
+     * @param array $arg - массив фильтр
+     * @return QueryPhone */
     public function filterMobiles($arg = array()) {
-
-
-        return new \WP_Query($arg);
-
+        return new QueryPhone($arg);
     }
 
 

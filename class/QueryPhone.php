@@ -6,9 +6,6 @@ class QueryPhone extends \WP_Query {
 
 
     public function __construct($filter) {
-
-
-
         $new_argument = array();
 
         /*
@@ -60,6 +57,8 @@ class QueryPhone extends \WP_Query {
     }
 
     private function _parseFilter(){
+
+
 
     }
 

@@ -6,6 +6,8 @@ if (!defined('ABSPATH')) {
 
 $mobiless = MobileCategory\Theme::getMobile()->filterMobiles();
 
+
+
 ?>
 
 
